@@ -21,6 +21,7 @@ local p = {
   dim = "#c0c0c0",
   cyan = "#80d0ff",
   blue = "#00a0ff",
+  lavender = "#b8a0ff",
   orange = "#ff9000",
   red = "#e04040",
   yellow = "#d0d000",
@@ -95,7 +96,7 @@ hi("Character", { fg = p.cyan })
 hi("Number", { fg = p.cyan })
 hi("Boolean", { fg = p.cyan })
 hi("Float", { fg = p.cyan })
-hi("Identifier", { fg = p.orange })
+hi("Identifier", { fg = "#d0d0d0" })
 hi("Function", { fg = p.blue })
 hi("Statement", { fg = p.red, italic = true })
 hi("Conditional", { fg = p.red, italic = true })
