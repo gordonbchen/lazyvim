@@ -4,6 +4,18 @@
 vim.g.autoformat = false
 
 vim.opt.statuscolumn = [[%!v:lua.LazyVim.statuscolumn()]]
+vim.opt.colorcolumn = "100"
+
+-- LazyVim sets `nowrap` in its defaults after this file is read, so apply this
+-- after startup and make it the default for subsequent windows as well.
+vim.api.nvim_create_autocmd("VimEnter", {
+  once = true,
+  callback = function()
+    vim.opt.wrap = true
+    vim.opt.linebreak = true
+    vim.opt.breakindent = true
+  end,
+})
 
 -- Let WhichKey take over leader sequences immediately.
 vim.opt.timeoutlen = 100
