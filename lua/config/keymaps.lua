@@ -3,3 +3,5 @@
 -- Add any additional keymaps here
 vim.keymap.set("n", "<C-k>", "<cmd>bnext<cr>", { desc = "Next Buffer" })
 vim.keymap.set("n", "<C-j>", "<cmd>bprevious<cr>", { desc = "Previous Buffer" })
+vim.keymap.set("i", "jk", "<Esc>", { noremap = true, silent = true })
+vim.keymap.set("n", "s", "<cmd>w<cr>", { noremap = true, silent = true })

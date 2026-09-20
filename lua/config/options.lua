@@ -6,7 +6,7 @@ vim.g.autoformat = false
 vim.opt.statuscolumn = [[%!v:lua.LazyVim.statuscolumn()]]
 
 -- Let WhichKey take over leader sequences immediately.
-vim.opt.timeoutlen = 0
+vim.opt.timeoutlen = 100
 
 -- Writing source should remain literal text rather than rendered/concealed symbols.
 local writing_source = vim.api.nvim_create_augroup("literal-writing-source", { clear = true })
