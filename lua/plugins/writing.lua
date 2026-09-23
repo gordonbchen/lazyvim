@@ -36,9 +36,44 @@ return {
     version = "1.*",
     ft = "typst",
     opts = {},
+    init = function()
+      local function build_typst(source)
+        source = vim.fn.fnamemodify(source, ":p")
+        local source_dir = vim.fs.dirname(source)
+        local output_dir = vim.fs.joinpath(source_dir, "typstbuild")
+        local output = vim.fs.joinpath(output_dir, vim.fn.fnamemodify(source, ":t:r") .. ".pdf")
+
+        if vim.fn.executable("typst") == 0 then
+          vim.notify("Typst build failed: `typst` is not on Neovim's PATH", vim.log.levels.ERROR)
+          return
+        end
+
+        vim.fn.mkdir(output_dir, "p")
+        vim.system({ "typst", "compile", source, output }, { cwd = source_dir }, function(result)
+          if result.code ~= 0 then
+            vim.schedule(function()
+              vim.notify("Typst build failed:\n" .. result.stderr, vim.log.levels.ERROR)
+            end)
+          end
+        end)
+      end
+
+      local group = vim.api.nvim_create_augroup("typst-build", { clear = true })
+      vim.api.nvim_create_autocmd("BufWritePost", {
+        group = group,
+        pattern = "*.typ",
+        callback = function(event)
+          build_typst(event.match)
+        end,
+      })
+
+      vim.api.nvim_create_user_command("TypstBuild", function()
+        build_typst(vim.api.nvim_buf_get_name(0))
+      end, { desc = "Build the current Typst file as a PDF" })
+    end,
     keys = {
       { "<leader>t", group = "Typst" },
-      { "<leader>tp", "<cmd>TypstPreviewToggle<cr>", desc = "Typst Preview" },
+      { "<leader>tp", "<cmd>TypstBuild<cr><cmd>TypstPreviewToggle<cr>", desc = "Typst Preview" },
       { "<leader>ts", "<cmd>TypstPreviewStop<cr>", desc = "Typst Preview Stop" },
       { "<leader>tc", "<cmd>TypstPreviewSyncCursor<cr>", desc = "Typst Preview Sync Cursor" },
     },
